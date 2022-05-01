@@ -1,4 +1,4 @@
-package com.lapetitesyrienne.api;
+package com.lapetitesyrienne.api.employee;
 
 import java.util.List;
 

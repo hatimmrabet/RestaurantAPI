@@ -1,4 +1,4 @@
-package com.lapetitesyrienne.api;
+package com.lapetitesyrienne.api.employee;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
