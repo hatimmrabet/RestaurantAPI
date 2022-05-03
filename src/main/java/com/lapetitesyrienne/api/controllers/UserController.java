@@ -40,24 +40,24 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    User replaceUser(@RequestBody User newUser, @PathVariable String id) {
-        return repository.findById(id)
-            .map(user -> {
-                user.setFirstName(newUser.getFirstName());
-                user.setLastName(newUser.getLastName());
-                user.setRole(newUser.getRole());
-                user.setDateOfBirth(newUser.getDateOfBirth());
-                user.setEmail(newUser.getEmail());
-                user.setPassword(newUser.getPassword());
-                user.setPhoneNumber(newUser.getPhoneNumber());
-                user.setAddress(newUser.getAddress());
-                return repository.save(user);
-            })
-            .orElseGet(() -> {
-                newUser.setId(id);
-                return repository.save(newUser);
-            });
-    }
+    // User replaceUser(@RequestBody User newUser, @PathVariable String id) {
+    //     return repository.findById(id)
+    //         .map(user -> {
+    //             user.setFirstName(newUser.getFirstName());
+    //             user.setLastName(newUser.getLastName());
+    //             user.setRole(newUser.getRole());
+    //             user.setDateOfBirth(newUser.getDateOfBirth());
+    //             user.setEmail(newUser.getEmail());
+    //             user.setPassword(newUser.getPassword());
+    //             user.setPhoneNumber(newUser.getPhoneNumber());
+    //             user.setAddress(newUser.getAddress());
+    //             return repository.save(user);
+    //         })
+    //         .orElseGet(() -> {
+    //             newUser.setId(id);
+    //             return repository.save(newUser);
+    //         });
+    // }
 
     @DeleteMapping("/users/{id}")
     void deleteUser(@PathVariable String id) {

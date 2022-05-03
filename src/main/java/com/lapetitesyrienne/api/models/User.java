@@ -1,108 +1,77 @@
 package com.lapetitesyrienne.api.models;
 
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
+@Document(collection = "users")
 public class User {
-    private @Id @GeneratedValue String id;
-    private String firstName;
-    private String lastName;
-    private String role;
-    private Date dateOfBirth;
+    @Id
+    private String id;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
+    @NotBlank
+    @Size(max = 120)
     private String password;
-    private String phoneNumber;
-    private String address;
+    @DBRef
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String role, Date dateOfBirth, String email, String password,
-            String phoneNumber, String address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-        this.dateOfBirth = dateOfBirth;
+    public User(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
     }
 
     public String getId() {
-        return this.id;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public String getRole() {
-        return this.role;
-    }
-
-    public Date getDateOfBirth() {
-        return this.dateOfBirth;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public String getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
-    public String getAddress() {
-        return this.address;
+        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
-    
 }
