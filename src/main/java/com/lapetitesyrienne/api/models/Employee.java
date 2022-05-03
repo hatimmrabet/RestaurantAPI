@@ -1,4 +1,4 @@
-package com.lapetitesyrienne.api.employee;
+package com.lapetitesyrienne.api.models;
 
 import java.util.Objects;
 

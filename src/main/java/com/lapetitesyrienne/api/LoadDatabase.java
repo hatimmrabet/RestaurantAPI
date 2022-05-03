@@ -1,7 +1,7 @@
 package com.lapetitesyrienne.api;
 
-import com.lapetitesyrienne.api.employee.Employee;
-import com.lapetitesyrienne.api.employee.EmployeeRepository;
+import com.lapetitesyrienne.api.models.Employee;
+import com.lapetitesyrienne.api.repository.EmployeeRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

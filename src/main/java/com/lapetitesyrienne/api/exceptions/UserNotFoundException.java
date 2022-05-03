@@ -1,4 +1,4 @@
-package com.lapetitesyrienne.api.user;
+package com.lapetitesyrienne.api.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     

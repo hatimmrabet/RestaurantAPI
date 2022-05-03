@@ -1,4 +1,6 @@
-package com.lapetitesyrienne.api.employee;
+package com.lapetitesyrienne.api.repository;
+
+import com.lapetitesyrienne.api.models.Employee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

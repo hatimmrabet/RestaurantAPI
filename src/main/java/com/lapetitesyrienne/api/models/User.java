@@ -1,4 +1,4 @@
-package com.lapetitesyrienne.api.user;
+package com.lapetitesyrienne.api.models;
 
 import java.util.Date;
 

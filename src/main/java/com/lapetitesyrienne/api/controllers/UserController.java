@@ -1,6 +1,10 @@
-package com.lapetitesyrienne.api.user;
+package com.lapetitesyrienne.api.controllers;
 
 import java.util.List;
+
+import com.lapetitesyrienne.api.exceptions.UserNotFoundException;
+import com.lapetitesyrienne.api.models.User;
+import com.lapetitesyrienne.api.repository.UserRepository;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
