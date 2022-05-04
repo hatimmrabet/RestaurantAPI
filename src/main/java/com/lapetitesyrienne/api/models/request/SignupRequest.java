@@ -4,11 +4,7 @@ import java.util.Set;
 
 import javax.validation.constraints.*;
  
-public class SignupRequest {
-    @NotBlank
-    @Size(min = 3, max = 20)
-    private String username;
- 
+public class SignupRequest { 
     @NotBlank
     @Size(max = 50)
     @Email
@@ -19,14 +15,6 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
-  
-    public String getUsername() {
-        return username;
-    }
- 
-    public void setUsername(String username) {
-        this.username = username;
-    }
  
     public String getEmail() {
         return email;
