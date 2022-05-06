@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,5 +93,10 @@ public class AuthController {
         // Create new user's account
         userRepository.save(signUpRequest);
         return ResponseEntity.ok(new MessageResponse("User created successfully!"));
+    }
+
+    @GetMapping("/testJWT")
+    public ResponseEntity<?> testJWT() {
+        return ResponseEntity.ok(new MessageResponse("JWT is working!"));
     }
 }
