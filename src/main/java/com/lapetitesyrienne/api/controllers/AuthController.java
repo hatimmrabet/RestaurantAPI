@@ -2,6 +2,8 @@ package com.lapetitesyrienne.api.controllers;
 
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.lapetitesyrienne.api.models.ERole;
@@ -14,6 +16,7 @@ import com.lapetitesyrienne.api.security.jwt.JwtUtils;
 import com.lapetitesyrienne.api.security.services.UserDetailsImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -72,16 +75,16 @@ public class AuthController {
 
     /**
      * Partie Signup
-     * @param signUpRequest for type user
+     * @param User for type user
      * @return
      */
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest, HttpServletRequest request) {
         // verification si le mail existe deja
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already used!"));
+                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, "Email address is already used", request.getRequestURI()));
         }
         // set le role par defaut
         signUpRequest.setRole(ERole.ROLE_CLIENT.toString());
@@ -92,7 +95,8 @@ public class AuthController {
         signUpRequest.setModifiedAt(new Date());
         // Create new user's account
         userRepository.save(signUpRequest);
-        return ResponseEntity.ok(new MessageResponse("User created successfully!"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED,
+                "User created successfully", request.getRequestURI()));
     }
 
     @GetMapping("/testJWT")

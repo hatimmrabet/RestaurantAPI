@@ -26,7 +26,6 @@ public class User {
     private String password;
     @NotBlank
     private String phoneNumber;
-    @NotBlank
     private String role = ERole.ROLE_CLIENT.toString();
     @NotBlank
     private String address;
