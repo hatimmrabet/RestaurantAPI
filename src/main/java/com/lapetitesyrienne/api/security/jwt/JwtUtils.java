@@ -13,26 +13,45 @@ import io.jsonwebtoken.*;
 
 @Component
 public class JwtUtils {
+    
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     @Value("${LPSR.app.jwtSecret}")
     private String jwtSecret;
     @Value("${LPSR.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
+    /**
+     * generate jwt token
+     * @param authentication
+     * @return
+     */
     public String generateJwtToken(Authentication authentication) {
+        // get user info
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        // prepare jwt token
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
+                .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
+
+    /***
+     * get userEmail from token
+     * @param token
+     * @return
+     */
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
+    /**
+     * validate jwt token
+     * @param authToken
+     * @return
+     */
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
