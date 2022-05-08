@@ -22,7 +22,7 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
     @NotBlank
-    @Size(min = 5)
+    @Size(min = 6)
     private String password;
     @NotBlank
     private String phoneNumber;
