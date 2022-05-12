@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -92,7 +92,7 @@ public class AuthController {
         signUpRequest.setPassword(encoder.encode(signUpRequest.getPassword()));
         // set creation, modif date
         signUpRequest.setCreatedAt(new Date());
-        signUpRequest.setModifiedAt(new Date());
+        signUpRequest.setUpdatedAt(new Date());
         // Create new user's account
         userRepository.save(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED,
