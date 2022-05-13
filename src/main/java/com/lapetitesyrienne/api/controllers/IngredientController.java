@@ -54,8 +54,11 @@ public class IngredientController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteIngredient(@PathVariable String id) {
-        ingredientRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient deleted"));
+        if(ingredientRepository.findById(id).isPresent()) {
+            ingredientRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient deleted"));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Ingredient not found"));
     }
     
     
