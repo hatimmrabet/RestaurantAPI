@@ -86,8 +86,11 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse(HttpStatus.BAD_REQUEST, "Email address is already used", request.getRequestURI()));
         }
-        // set le role par defaut
-        signUpRequest.setRole(ERole.ROLE_CLIENT.toString());
+        System.out.println(signUpRequest.getRole());
+        // set le role par defaut s'il n'a pas de role
+        if (signUpRequest.getRole() == null) {
+            signUpRequest.setRole(ERole.ROLE_CLIENT.toString());
+        }
         // encode le mot de passe
         signUpRequest.setPassword(encoder.encode(signUpRequest.getPassword()));
         // set creation, modif date

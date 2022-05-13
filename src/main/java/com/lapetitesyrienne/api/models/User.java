@@ -15,31 +15,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
-
     @NotBlank
     private String firstName;
-
     @NotBlank
     private String lastName;
-
-    @NotBlank
-    @Email(message = "Email should be valid")
+    @NotBlank @Email(message = "Email should be valid")
     private String email;
-
     @NotBlank @Size(min = 6)
     private String password;
-
     @NotBlank
     private String phoneNumber;
-
-    private String role = ERole.ROLE_CLIENT.toString();
-
+    private String role;
     @NotBlank
     private String address;
-
     @Past(message = "Date of birth should be in the past")
     private Date birthDate;
-
     private Date createdAt; 
     private Date updatedAt;
 
