@@ -10,7 +10,7 @@ import com.lapetitesyrienne.api.models.ERole;
 import com.lapetitesyrienne.api.models.User;
 import com.lapetitesyrienne.api.models.request.LoginRequest;
 import com.lapetitesyrienne.api.models.response.JwtResponse;
-import com.lapetitesyrienne.api.models.response.MessageResponse;
+import com.lapetitesyrienne.api.models.response.ResponseMessage;
 import com.lapetitesyrienne.api.repository.UserRepository;
 import com.lapetitesyrienne.api.security.jwt.JwtUtils;
 import com.lapetitesyrienne.api.security.services.UserDetailsImpl;
@@ -82,11 +82,8 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody User signUpRequest, HttpServletRequest request) {
         // verification si le mail existe deja
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(HttpStatus.BAD_REQUEST, "Email address is already used", request.getRequestURI()));
+            return new ResponseEntity<String>("Email is already used",HttpStatus.BAD_REQUEST);
         }
-        System.out.println(signUpRequest.getRole());
         // set le role par defaut s'il n'a pas de role
         if (signUpRequest.getRole() == null) {
             signUpRequest.setRole(ERole.ROLE_CLIENT.toString());
@@ -98,12 +95,11 @@ public class AuthController {
         signUpRequest.setUpdatedAt(new Date());
         // Create new user's account
         userRepository.save(signUpRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(HttpStatus.CREATED,
-                "User created successfully", request.getRequestURI()));
+        return new ResponseEntity<ResponseMessage>(new ResponseMessage("User registered successfully!"), HttpStatus.CREATED);
     }
 
     @GetMapping("/testJWT")
     public ResponseEntity<?> testJWT() {
-        return ResponseEntity.ok(new MessageResponse("JWT is working!"));
+        return ResponseEntity.ok(new ResponseMessage("JWT is working!"));
     }
 }
