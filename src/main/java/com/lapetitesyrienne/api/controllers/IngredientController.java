@@ -31,7 +31,7 @@ public class IngredientController {
     IngredientRepository ingredientRepository;
 
     @PostMapping()
-    public ResponseEntity<?> postMethodName(@Valid @RequestBody Ingredient entity) {
+    public ResponseEntity<?> createIngredient(@Valid @RequestBody Ingredient entity) {
         if(ingredientRepository.findByName(entity.getName()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Ingredient already exists"));
         }
@@ -40,12 +40,12 @@ public class IngredientController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getMethodName() {
+    public ResponseEntity<?> getIngredient() {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientRepository.findAll());
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> putMethodName(@PathVariable String id, @RequestBody Ingredient entity) {
+    public ResponseEntity<?> updateIngredient(@PathVariable String id, @RequestBody Ingredient entity) {
         Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new IngredientNotFoundException(entity.getName()));
         ingredient.setName(entity.getName());
         ingredientRepository.save(ingredient);
@@ -53,7 +53,7 @@ public class IngredientController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteMethodName(@PathVariable String id) {
+    public ResponseEntity<?> deleteIngredient(@PathVariable String id) {
         ingredientRepository.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient deleted"));
     }
