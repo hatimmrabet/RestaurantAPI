@@ -35,4 +35,11 @@ public class Categorie {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "Categorie{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
