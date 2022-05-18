@@ -29,6 +29,9 @@ public class CategorieController {
 
     @PostMapping()
     public ResponseEntity<?> createCategorie(@Valid @RequestBody Categorie entity) {
+        // change the name of the categorie
+        entity.formatName();
+        // check if the categorie already exists
         if(categorieRepository.findByName(entity.getName()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Categorie already exists"));
         }
@@ -38,7 +41,7 @@ public class CategorieController {
 
     @GetMapping()
     public ResponseEntity<?> getAllCategories() {
-        return ResponseEntity.status(HttpStatus.OK).body(categorieRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(categorieRepository.findByOrderByNameAsc());
     }
 
     @GetMapping("{id}")

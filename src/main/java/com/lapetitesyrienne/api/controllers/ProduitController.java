@@ -48,9 +48,18 @@ public class ProduitController {
 
     @PostMapping()
     public ResponseEntity<?> createProduit(@RequestBody Produit entity) {
+        // format categorie name
+        entity.getCategorie().formatName();
+        // check if categorie exists if not create a new one with this name
+        if(categorieRepository.findByName(entity.getCategorie().getName()) == null) {
+            categorieRepository.save(entity.getCategorie());
+        }
         entity.setCategorie(categorieRepository.findByName(entity.getCategorie().getName()));
+        // check if ingredient exists if not create a new one with this name
         Ingredient[] ingredients = new Ingredient[entity.getIngredients().length];
         for (int i = 0; i < entity.getIngredients().length; i++) {
+            // format the name of the ingredient
+            entity.getIngredients()[i].formatName();
             // create ingredient if not exist
             if (ingredientRepository.findByName(entity.getIngredients()[i].getName()) == null) {
                 ingredientRepository.save(entity.getIngredients()[i]);
@@ -58,6 +67,7 @@ public class ProduitController {
             ingredients[i] = ingredientRepository.findByName(entity.getIngredients()[i].getName());
         }
         entity.setIngredients(ingredients);
+        // enregistrer le produit
         produitRepository.save(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }

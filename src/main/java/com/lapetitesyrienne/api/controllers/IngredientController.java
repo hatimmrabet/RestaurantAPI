@@ -35,13 +35,15 @@ public class IngredientController {
         if(ingredientRepository.findByName(entity.getName()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Ingredient already exists"));
         }
+        // change the name of the ingredient
+        entity.formatName();
         ingredientRepository.save(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Ingredient created"));
     }
 
     @GetMapping()
-    public ResponseEntity<?> getIngredient() {
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientRepository.findAll());
+    public ResponseEntity<?> getIngredients() {
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientRepository.findByOrderByNameAsc());
     }
 
     @PutMapping("{id}")

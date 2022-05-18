@@ -35,6 +35,10 @@ public class Categorie {
         this.name = name;
     }
 
+    public void formatName() {
+        this.name = this.name.substring(0, 1).toUpperCase() + this.name.substring(1).toLowerCase();
+    }
+    
     @Override
     public String toString() {
         return "Categorie{" +
