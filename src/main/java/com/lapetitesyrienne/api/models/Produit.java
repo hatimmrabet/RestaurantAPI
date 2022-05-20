@@ -25,7 +25,8 @@ public class Produit {
     public Produit() {
     }
 
-    public Produit(String name, String description, String image, Double price, Categorie categorie, Ingredient[] ingredients) {
+    public Produit(String name, String description, 
+            String image, Double price, Categorie categorie, Ingredient[] ingredients) {
         this.name = name;
         this.description = description;
         this.image = image;

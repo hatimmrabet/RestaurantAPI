@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface CategorieRepository extends MongoRepository<Categorie, String> {
 
     Categorie findByName(String name);
+    Categorie findByNameIgnoreCase(String name);
     Boolean existsByName(String name);
     List<Categorie> findByOrderByNameAsc();
 
