@@ -3,6 +3,8 @@ package com.lapetitesyrienne.api.models;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
 public class Menu {
     
     @Id
@@ -13,6 +15,7 @@ public class Menu {
     private String description;
     private String image;
     private Double price;
+    @DBRef
     private Produit[] produits;
 
     public Menu() {
