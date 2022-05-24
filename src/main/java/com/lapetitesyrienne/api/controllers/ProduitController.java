@@ -2,6 +2,8 @@ package com.lapetitesyrienne.api.controllers;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.List;
 
 import com.lapetitesyrienne.api.models.Categorie;
 import com.lapetitesyrienne.api.models.Ingredient;
@@ -113,5 +115,15 @@ public class ProduitController {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Produit deleted"));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Produit not found"));
+    }
+
+    @GetMapping("/group-by-categories")
+    public ResponseEntity<?> getProduitGroupByCategorie() {
+        HashMap<String, List<Produit>> map = new HashMap<>();
+        List<Categorie> categories = categorieRepository.findAll();
+        for(Categorie categorie : categories) {
+            map.put(categorie.getName(), produitRepository.findByCategorie(categorie));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 }
