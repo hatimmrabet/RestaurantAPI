@@ -67,10 +67,10 @@ public class CommandeController {
             int num = Integer.parseInt(lastCmd.getNumero().substring(lastCmd.getType().length())) + 1 ;
             numero = request.getType() + num;
         }
-        if(userRepository.findById(request.getClientID()) == null) {
+        if(userRepository.findById(request.getClient().getId()) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("User not found"));
         }
-        client = userRepository.findById(request.getClientID()).get();
+        client = userRepository.findById(request.getClient().getId()).get();
         // i deleted menu from commande
         Commande cmd = new Commande(numero, new Date(), "En cours", request.getType(), client, request.getItems());
         cmd.countPrice();

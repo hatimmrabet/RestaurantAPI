@@ -4,29 +4,30 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.lapetitesyrienne.api.models.CommandeItem;
+import com.lapetitesyrienne.api.models.User;
 
 public class CommandeRequest {
 
     @NotEmpty @NotNull @NotEmpty
     private String type;
-    private String clientID;
+    private User client;
     private CommandeItem[] items;
 
     public CommandeRequest() {
     }
 
-    public CommandeRequest(String type, String clientID, CommandeItem[] items) {
+    public CommandeRequest(String type, User client, CommandeItem[] items) {
         this.type = type;
-        this.clientID = clientID;
+        this.client = client;
         this.items = items;
     }
 
-    public String getClientID() {
-        return clientID;
+    public User getClient() {
+        return client;
     }
 
-    public void setClientID(String clientID) {
-        this.clientID = clientID;
+    public void setClient(User client) {
+        this.client = client;
     }
 
     public CommandeItem[] getItems() {
