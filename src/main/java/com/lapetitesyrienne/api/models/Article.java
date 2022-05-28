@@ -1,5 +1,7 @@
 package com.lapetitesyrienne.api.models;
 
+import java.util.Date;
+
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
@@ -19,6 +21,7 @@ public abstract class Article {
     private String description;
     private String image;
     private Double price;
+    private Date createdAt;
 
     public Article() {
     }
@@ -28,6 +31,7 @@ public abstract class Article {
         this.description = description;
         this.image = image;
         this.price = price;
+        this.createdAt = new Date();
     }
 
     public String getId() {
@@ -68,6 +72,14 @@ public abstract class Article {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

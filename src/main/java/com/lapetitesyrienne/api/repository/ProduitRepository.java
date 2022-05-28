@@ -13,5 +13,6 @@ public interface ProduitRepository extends MongoRepository<Produit, String> {
     Boolean existsByName(String name);
     List<Produit> findByCategorie(Categorie categorie);
     List<Produit> findByCategorieName(String categorieName);
+    List<Produit> findByOrderByCreatedAtDesc();
         
 }

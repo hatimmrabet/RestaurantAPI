@@ -2,6 +2,7 @@ package com.lapetitesyrienne.api.controllers;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class ProduitController {
 
     @GetMapping()
     public ResponseEntity<?> getProduit() {
-        return ResponseEntity.status(HttpStatus.OK).body(produitRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(produitRepository.findByOrderByCreatedAtDesc());
     }
 
     @GetMapping("/{id}")
@@ -68,6 +69,7 @@ public class ProduitController {
         produit.setName(name);
         produit.setDescription(description);
         produit.setPrice(price);
+        produit.setCreatedAt(new Date());
         // list des ingredients
         Ingredient[] ingredients = new Ingredient[ingredientsName.length];
         for (int i = 0; i < ingredientsName.length; i++) {

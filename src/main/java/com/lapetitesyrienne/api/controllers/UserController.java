@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/users")
     List<UserDTO> all() {
-        return repository.findAll().stream().map(u -> new UserDTO(u)).collect(Collectors.toList());
+        return repository.findByOrderByCreatedAtDesc().stream().map(u -> new UserDTO(u)).collect(Collectors.toList());
     }
 
     @PostMapping("/users")

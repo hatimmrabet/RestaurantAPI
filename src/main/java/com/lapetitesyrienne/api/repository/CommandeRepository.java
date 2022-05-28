@@ -9,12 +9,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface CommandeRepository extends MongoRepository<Commande, String> {
 
-    Commande findByNumero(Integer numero);
-    Boolean existsByNumero(Integer numero);
+    Commande findByNumero(String numero);
+    Boolean existsByNumero(String numero);
     List<Commande> findByClient(User client);
     List<Commande> findByEtat(String etat);
     List<Commande> findByEtatAndClient(String etat, User client);
     Commande findTopByOrderByDateDesc();
-
+    List<Commande> findByOrderByDateDesc();
     
 }

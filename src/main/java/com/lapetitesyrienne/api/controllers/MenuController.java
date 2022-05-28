@@ -2,6 +2,7 @@ package com.lapetitesyrienne.api.controllers;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Date;
 
 import com.lapetitesyrienne.api.models.Menu;
 import com.lapetitesyrienne.api.models.Produit;
@@ -36,7 +37,7 @@ public class MenuController {
 
     @GetMapping()
     public ResponseEntity<?> getMenu() {
-        return ResponseEntity.status(HttpStatus.OK).body(menuRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(menuRepository.findByOrderByCreatedAtDesc());
     }
 
     @GetMapping("/{id}")
@@ -56,6 +57,7 @@ public class MenuController {
         menu.setName(name);
         menu.setPrice(price);
         menu.setDescription(description);
+        menu.setCreatedAt(new Date());
         Produit[] produits = new Produit[produits_id.length];
         for (int i = 0; i < produits_id.length; i++) {
             if (!produitRepository.findById(produits_id[i]).isPresent()) {

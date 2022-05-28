@@ -11,7 +11,6 @@ public interface IngredientRepository extends MongoRepository<Ingredient, String
     Ingredient findByName(String name);
     Ingredient findByNameIgnoreCase(String name);
     Boolean existsByName(String name);
-    List<Ingredient> findByOrderByNameAsc();
-    
+    List<Ingredient> findByOrderByNameAsc();   
     
 }

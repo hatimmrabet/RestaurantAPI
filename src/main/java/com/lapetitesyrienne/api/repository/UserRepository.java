@@ -1,5 +1,6 @@
 package com.lapetitesyrienne.api.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.lapetitesyrienne.api.models.User;
@@ -10,4 +11,5 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     Optional<User> findByEmail(String email);
     Boolean existsByEmail(String email);
+    List<User> findByOrderByCreatedAtDesc();
 }
