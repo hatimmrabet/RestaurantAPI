@@ -86,7 +86,7 @@ public class AuthController {
         }
         // set le role par defaut s'il n'a pas de role
         if (signUpRequest.getRole() == null) {
-            signUpRequest.setRole(ERole.ROLE_CLIENT.toString());
+            signUpRequest.setRole(ERole.CLIENT.toString());
         }
         // encode le mot de passe
         signUpRequest.setPassword(encoder.encode(signUpRequest.getPassword()));
