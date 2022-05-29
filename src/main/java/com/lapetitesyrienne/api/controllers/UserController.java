@@ -52,9 +52,11 @@ public class UserController {
     ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable String id) {
         // check user by id exists
         User oldUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        // check email is unique
-        if(userRepository.findByEmail(newUser.getEmail()) != null )
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Email already exists"));
+        if(!oldUser.getEmail().equals(newUser.getEmail())) {
+            // check email is unique
+            if(userRepository.findByEmail(newUser.getEmail()) != null )
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Email already exists"));
+        }
         // get user info from old user
         newUser.setId(oldUser.getId());
         newUser.setPassword(encoder.encode(newUser.getPassword()));
