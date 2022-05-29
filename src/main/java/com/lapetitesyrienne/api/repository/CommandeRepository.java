@@ -11,7 +11,7 @@ public interface CommandeRepository extends MongoRepository<Commande, String> {
 
     Commande findByNumero(String numero);
     Boolean existsByNumero(String numero);
-    List<Commande> findByClient(User client);
+    List<Commande> findByClientOrderByDateDesc(User client);
     List<Commande> findByEtat(String etat);
     List<Commande> findByEtatAndClient(String etat, User client);
     Commande findTopByOrderByDateDesc();

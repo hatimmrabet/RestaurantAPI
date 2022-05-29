@@ -55,7 +55,7 @@ public class CommandeController {
     @GetMapping("/client/{id}")
     public ResponseEntity<?> getCommandeByClient(@PathVariable String id) {
         User u = userRepository.findById(id).get();
-        return ResponseEntity.status(HttpStatus.OK).body(commandeRepository.findByClient(u));
+        return ResponseEntity.status(HttpStatus.OK).body(commandeRepository.findByClientOrderByDateDesc(u));
     }
 
     @PostMapping()
