@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,6 @@ public class MenuController {
 
     @Autowired
     MenuRepository menuRepository;
-
     @Autowired
     ProduitRepository produitRepository;
 
@@ -84,6 +84,53 @@ public class MenuController {
         // enregistrer menu
         menuRepository.save(menu);
         return ResponseEntity.status(HttpStatus.CREATED).body(menu);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editMenu(@PathVariable String id, 
+            @RequestParam(name="image", required = false) MultipartFile image,
+            @RequestParam("name") String name, @RequestParam("price") double price,
+            @RequestParam("description") String description,
+            @RequestParam("produits") String[] produits_id) {
+
+        if (menuRepository.findById(id).isPresent()) {
+            Menu menu = menuRepository.findById(id).get();
+            menu.setName(name);
+            menu.setPrice(price);
+            menu.setDescription(description);
+            menu.setCreatedAt(menu.getCreatedAt());
+            // get products by ids
+            Produit[] produits = new Produit[produits_id.length];
+            for (int i = 0; i < produits_id.length; i++) {
+                if (!produitRepository.findById(produits_id[i]).isPresent()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body(new ResponseMessage("Produit " + produits_id[i] + " not found"));
+                }
+                produits[i] = produitRepository.findById(produits_id[i]).get();
+            }
+            menu.setProduits(produits);
+            if(image != null) {
+                // supprimer l'ancienne image
+                File oldImage = new File(root.getAbsolutePath() + "/" + menu.getImage());
+                oldImage.delete();
+                // enregistrer la nouvelle image
+                menu.setImage(menu.getId() + image.getOriginalFilename());
+                try {
+                    File path = new File(root.getAbsolutePath() + "/" + menu.getImage());
+                    path.createNewFile();
+                    FileOutputStream output = new FileOutputStream(path);
+                    output.write(image.getBytes());
+                    output.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            // enregistrer menu
+            menuRepository.save(menu);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Menu updated"));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Menu not found"));
     }
 
 }
