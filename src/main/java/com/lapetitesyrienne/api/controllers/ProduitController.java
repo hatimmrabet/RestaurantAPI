@@ -12,6 +12,7 @@ import com.lapetitesyrienne.api.models.Produit;
 import com.lapetitesyrienne.api.models.response.ResponseMessage;
 import com.lapetitesyrienne.api.repository.CategorieRepository;
 import com.lapetitesyrienne.api.repository.IngredientRepository;
+import com.lapetitesyrienne.api.repository.MenuRepository;
 import com.lapetitesyrienne.api.repository.ProduitRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,10 @@ public class ProduitController {
 
     @Autowired
     ProduitRepository produitRepository;
-
+    @Autowired
+    MenuRepository menuRepository;
     @Autowired
     CategorieRepository categorieRepository;
-
     @Autowired
     IngredientRepository ingredientRepository;
 
@@ -110,7 +111,7 @@ public class ProduitController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editProduit(@PathVariable String id,
-            @RequestParam(name="image", required=false) MultipartFile image,
+            @RequestParam(name = "image", required = false) MultipartFile image,
             @RequestParam("name") String name, @RequestParam("description") String description,
             @RequestParam("price") double price, @RequestParam("categorie") String categorieName,
             @RequestParam("ingredients") String[] ingredientsName) {
@@ -166,7 +167,12 @@ public class ProduitController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduit(@PathVariable String id) {
-        if (produitRepository.findById(id).isPresent()) {
+        Produit produit = produitRepository.findById(id).orElse(null);
+        if (produit != null) {
+            if (menuRepository.findByProduitsContaining(produit).size() > 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ResponseMessage("Product cannot be deleted, Product is in a Menu"));
+            }
             // delete image
             File image = new File(root.getAbsolutePath() + "/" + produitRepository.findById(id).get().getImage());
             image.delete();
