@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -129,6 +130,21 @@ public class MenuController {
             // enregistrer menu
             menuRepository.save(menu);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Menu updated"));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Menu not found"));
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMenu(@PathVariable String id) {
+        if (menuRepository.findById(id).isPresent()) {
+            Menu menu = menuRepository.findById(id).get();
+            // supprimer l'image
+            File image = new File(root.getAbsolutePath() + "/" + menu.getImage());
+            image.delete();
+            // supprimer le menu
+            menuRepository.delete(menu);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Menu deleted"));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Menu not found"));
     }
