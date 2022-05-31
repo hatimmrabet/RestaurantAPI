@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.lapetitesyrienne.api.exceptions.UserNotFoundException;
+import com.lapetitesyrienne.api.models.Commande;
 import com.lapetitesyrienne.api.models.User;
 import com.lapetitesyrienne.api.models.UserDTO;
 import com.lapetitesyrienne.api.models.response.ResponseMessage;
+import com.lapetitesyrienne.api.repository.CommandeRepository;
 import com.lapetitesyrienne.api.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class UserController {
     
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CommandeRepository commandeRepository;
     @Autowired
     PasswordEncoder encoder;
 
@@ -68,8 +72,20 @@ public class UserController {
 
     @DeleteMapping("/users/{id}")
     ResponseEntity<?> deleteUser(@PathVariable String id) {
+        // verifier si l'utilisateur existe
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        if(user.getEmail().equals("user@deleted"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("User '"+user.getEmail()+"' cannot be deleted"));
+        // checher l'utilisateur par default
+        User defaultUser = userRepository.findByEmail("user@deleted");
+        // changer les commandes d'utilisateur vers l'user par default
+        for(Commande commande : commandeRepository.findByClientOrderByDateDesc(user)) {
+            commande.setClient(defaultUser);
+            commandeRepository.save(commande);
+        }
+        // supprimer l'utilisateur
         userRepository.deleteById(id);
-        return ResponseEntity.status(204).body(new ResponseMessage("resource deleted successfully"));
+        return ResponseEntity.status(204).body(new ResponseMessage("User deleted successfully"));
     }
     
 }
