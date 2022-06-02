@@ -1,10 +1,14 @@
 package com.lapetitesyrienne.api.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.lapetitesyrienne.api.models.Categorie;
+import com.lapetitesyrienne.api.models.Produit;
 import com.lapetitesyrienne.api.models.response.ResponseMessage;
 import com.lapetitesyrienne.api.repository.CategorieRepository;
+import com.lapetitesyrienne.api.repository.ProduitRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +30,8 @@ public class CategorieController {
 
     @Autowired
     CategorieRepository categorieRepository;
+    @Autowired
+    ProduitRepository produitRepository;
 
     @PostMapping()
     public ResponseEntity<?> createCategorie(@Valid @RequestBody Categorie entity) {
@@ -36,7 +42,7 @@ public class CategorieController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Categorie already exists"));
         }
         categorieRepository.save(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Categorie created"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 
     @GetMapping()
@@ -66,11 +72,18 @@ public class CategorieController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteCategorie(@PathVariable String id) {
-        if(categorieRepository.findById(id).isPresent()) {
-            categorieRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Categorie deleted"));
+        if(!categorieRepository.findById(id).isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Categorie not found"));
+        Categorie categorie = categorieRepository.findById(id).get();
+        List<Produit> produits = produitRepository.findByCategorie(categorie);
+        String ret = "";
+        for(Produit produit : produits) {
+            ret += produit.getName() + ", ";
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Categorie not found"));
+        if(!ret.equals("")) {
+            ret = ret.substring(0, ret.length() - 2) +".";
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Categorie cannot be deleted, it is used by : " + ret));
     }
     
 }
