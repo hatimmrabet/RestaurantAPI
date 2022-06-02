@@ -6,6 +6,7 @@ import com.lapetitesyrienne.api.exceptions.IngredientNotFoundException;
 import com.lapetitesyrienne.api.models.Ingredient;
 import com.lapetitesyrienne.api.models.response.ResponseMessage;
 import com.lapetitesyrienne.api.repository.IngredientRepository;
+import com.lapetitesyrienne.api.repository.ProduitRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,16 +30,18 @@ public class IngredientController {
 
     @Autowired
     IngredientRepository ingredientRepository;
+    @Autowired
+    ProduitRepository produitRepository;
 
     @PostMapping()
     public ResponseEntity<?> createIngredient(@Valid @RequestBody Ingredient entity) {
-        if(ingredientRepository.findByName(entity.getName()) != null) {
+        if(ingredientRepository.findByNameIgnoreCase(entity.getName()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Ingredient already exists"));
         }
         // change the name of the ingredient
         entity.formatName();
         ingredientRepository.save(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage("Ingredient created"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 
     @GetMapping()
@@ -49,6 +52,7 @@ public class IngredientController {
     @PutMapping("{id}")
     public ResponseEntity<?> updateIngredient(@PathVariable String id, @RequestBody Ingredient entity) {
         Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(() -> new IngredientNotFoundException(entity.getName()));
+        entity.formatName();
         ingredient.setName(entity.getName());
         ingredientRepository.save(ingredient);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient updated"));
@@ -56,11 +60,15 @@ public class IngredientController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteIngredient(@PathVariable String id) {
-        if(ingredientRepository.findById(id).isPresent()) {
-            ingredientRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient deleted"));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Ingredient not found"));
+        if(!ingredientRepository.findById(id).isPresent())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Ingredient not found"));
+
+        Ingredient ingredient = ingredientRepository.findById(id).get();
+        if(produitRepository.findByIngredientsContaining(ingredient).size()>0)
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Ingredient is used in a product"));
+
+        ingredientRepository.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient deleted"));
     }
     
     
