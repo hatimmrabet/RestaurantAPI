@@ -76,14 +76,19 @@ public class CategorieController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Categorie not found"));
         Categorie categorie = categorieRepository.findById(id).get();
         List<Produit> produits = produitRepository.findByCategorie(categorie);
-        String ret = "";
-        for(Produit produit : produits) {
-            ret += produit.getName() + ", ";
+        if(produits.size() > 0) {
+            String ret = "";
+            for(Produit produit : produits) {
+                ret += produit.getName() + ", ";
+            }
+            if(!ret.equals("")) {
+                ret = ret.substring(0, ret.length() - 2) +".";
+            }
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Categorie cannot be deleted, it is used by : " + ret));
+        } else {
+            categorieRepository.delete(categorie);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Categorie deleted"));
         }
-        if(!ret.equals("")) {
-            ret = ret.substring(0, ret.length() - 2) +".";
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Categorie cannot be deleted, it is used by : " + ret));
     }
     
 }
