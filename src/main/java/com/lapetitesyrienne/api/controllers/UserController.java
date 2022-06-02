@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/users")
     List<UserDTO> all() {
-        return userRepository.findByEmailNotNull(Sort.by("desc","createdAt")).stream().map(u -> new UserDTO(u)).collect(Collectors.toList());
+        return userRepository.findByEmailNotNull(Sort.by(Sort.Direction.DESC,"createdAt")).stream().map(u -> new UserDTO(u)).collect(Collectors.toList());
     }
 
     @PostMapping("/users")
