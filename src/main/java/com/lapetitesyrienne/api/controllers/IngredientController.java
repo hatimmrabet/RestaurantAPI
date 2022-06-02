@@ -1,9 +1,12 @@
 package com.lapetitesyrienne.api.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.lapetitesyrienne.api.exceptions.IngredientNotFoundException;
 import com.lapetitesyrienne.api.models.Ingredient;
+import com.lapetitesyrienne.api.models.Produit;
 import com.lapetitesyrienne.api.models.response.ResponseMessage;
 import com.lapetitesyrienne.api.repository.IngredientRepository;
 import com.lapetitesyrienne.api.repository.ProduitRepository;
@@ -64,11 +67,22 @@ public class IngredientController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Ingredient not found"));
 
         Ingredient ingredient = ingredientRepository.findById(id).get();
-        if(produitRepository.findByIngredientsContaining(ingredient).size()>0)
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Ingredient is used in a product"));
-
-        ingredientRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient deleted"));
+        List<Produit> produits = produitRepository.findByIngredientsContaining(ingredient);
+        if(produits.size()>0)
+        {
+            String ret = "";
+            for(Produit p : produits)
+            {
+                ret += p.getName() + ", ";
+            }
+            if (!ret.equals("")) {
+                ret = ret.substring(0, ret.length() - 2)+".";
+            }
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage("Ingredient cannot be deleted, it is used by : " + ret));
+        } else {
+            ingredientRepository.delete(ingredient);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Ingredient deleted"));
+        }
     }
     
     

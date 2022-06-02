@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.lapetitesyrienne.api.models.Categorie;
 import com.lapetitesyrienne.api.models.Ingredient;
+import com.lapetitesyrienne.api.models.Menu;
 import com.lapetitesyrienne.api.models.Produit;
 import com.lapetitesyrienne.api.models.response.ResponseMessage;
 import com.lapetitesyrienne.api.repository.CategorieRepository;
@@ -169,9 +170,17 @@ public class ProduitController {
     public ResponseEntity<?> deleteProduit(@PathVariable String id) {
         Produit produit = produitRepository.findById(id).orElse(null);
         if (produit != null) {
-            if (menuRepository.findByProduitsContaining(produit).size() > 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new ResponseMessage("Product cannot be deleted, Product is in a Menu"));
+            List<Menu> menus = menuRepository.findByProduitsContaining(produit);
+            if (menus.size() > 0) {
+                String ret = "";
+                for (Menu menu : menus) {
+                    ret += menu.getName() + ", ";
+                }
+                if(!ret.equals("")){
+                    ret = ret.substring(0, ret.length() - 2)+".";
+                }
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(
+                        "Product can't be deleted, it's used in menus : " + ret));
             }
             // delete image
             File image = new File(root.getAbsolutePath() + "/" + produitRepository.findById(id).get().getImage());
