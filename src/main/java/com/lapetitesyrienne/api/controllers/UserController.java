@@ -13,6 +13,7 @@ import com.lapetitesyrienne.api.repository.CommandeRepository;
 import com.lapetitesyrienne.api.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +39,7 @@ public class UserController {
 
     @GetMapping("/users")
     List<UserDTO> all() {
-        return userRepository.findByOrderByCreatedAtDesc().stream().map(u -> new UserDTO(u)).collect(Collectors.toList());
+        return userRepository.findByEmailNotNull(Sort.by("desc","createdAt")).stream().map(u -> new UserDTO(u)).collect(Collectors.toList());
     }
 
     @PostMapping("/users")
@@ -74,18 +75,24 @@ public class UserController {
     ResponseEntity<?> deleteUser(@PathVariable String id) {
         // verifier si l'utilisateur existe
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        if(user.getEmail().equals("user@deleted"))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("User '"+user.getEmail()+"' cannot be deleted"));
-        // checher l'utilisateur par default
-        User defaultUser = userRepository.findByEmail("user@deleted");
-        // changer les commandes d'utilisateur vers l'user par default
-        for(Commande commande : commandeRepository.findByClientOrderByDateDesc(user)) {
-            commande.setClient(defaultUser);
-            commandeRepository.save(commande);
+        // verifier si l'utilisateur n'a pas de commande
+        List<Commande> commandes = commandeRepository.findByClientOrderByDateDesc(user);
+        if(commandes.size() > 0)
+        {
+            user.setFirstName("Deleted");
+            user.setLastName("User");
+            user.setEmail(null);
+            user.setPhoneNumber(null);
+            user.setAddress(null);
+            user.setPassword(null);
+            user.setBirthDate(null);
+            user.setUpdatedAt(new Date());
+            userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("User data deleted successfully"));
+        } else {
+            userRepository.delete(user);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("User deleted successfully"));
         }
-        // supprimer l'utilisateur
-        userRepository.deleteById(id);
-        return ResponseEntity.status(204).body(new ResponseMessage("User deleted successfully"));
     }
     
 }
