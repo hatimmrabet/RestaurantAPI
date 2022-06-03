@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+import com.lapetitesyrienne.api.models.request.UserPutRequest;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -47,6 +49,17 @@ public class User {
         this.role = role;
         this.address = address;
         this.birthDate = birthDate;
+    }
+
+    public User(UserPutRequest userBody) {
+        this.firstName = userBody.getFirstName();
+        this.lastName = userBody.getLastName();
+        this.email = userBody.getEmail();
+        this.password = userBody.getPassword();
+        this.phoneNumber = userBody.getPhoneNumber();
+        this.role = userBody.getRole();
+        this.address = userBody.getAddress();
+        this.birthDate = userBody.getBirthDate();
     }
 
     public String getId() {

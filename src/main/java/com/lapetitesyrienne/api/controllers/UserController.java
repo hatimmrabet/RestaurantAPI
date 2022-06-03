@@ -8,6 +8,7 @@ import com.lapetitesyrienne.api.exceptions.UserNotFoundException;
 import com.lapetitesyrienne.api.models.Commande;
 import com.lapetitesyrienne.api.models.User;
 import com.lapetitesyrienne.api.models.UserDTO;
+import com.lapetitesyrienne.api.models.request.UserPutRequest;
 import com.lapetitesyrienne.api.models.response.ResponseMessage;
 import com.lapetitesyrienne.api.repository.CommandeRepository;
 import com.lapetitesyrienne.api.repository.UserRepository;
@@ -54,9 +55,10 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable String id) {
+    ResponseEntity<?> replaceUser(@RequestBody UserPutRequest userBody, @PathVariable String id) {
         // check user by id exists
         User oldUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User newUser = new User(userBody);
         if(!oldUser.getEmail().equals(newUser.getEmail())) {
             // check email is unique
             if(userRepository.findByEmail(newUser.getEmail()) != null )
@@ -64,7 +66,10 @@ public class UserController {
         }
         // get user info from old user
         newUser.setId(oldUser.getId());
-        newUser.setPassword(encoder.encode(newUser.getPassword()));
+        if(userBody.getPassword() != null)
+            newUser.setPassword(encoder.encode(userBody.getPassword()));
+        else
+            newUser.setPassword(oldUser.getPassword());
         newUser.setCreatedAt(oldUser.getCreatedAt());
         newUser.setUpdatedAt(new Date());
         userRepository.save(newUser);
