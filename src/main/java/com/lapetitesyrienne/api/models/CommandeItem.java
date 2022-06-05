@@ -2,22 +2,22 @@ package com.lapetitesyrienne.api.models;
 
 public class CommandeItem {
 
-    private Article article;
+    private ArticleCommande article;
     private int quantity;
 
     public CommandeItem() {
     }
 
-    public CommandeItem(Article article, int quantity) {
+    public CommandeItem(ArticleCommande article, int quantity) {
         this.article = article;
         this.quantity = quantity;
     }
 
-    public Article getArticle() {
+    public ArticleCommande getArticle() {
         return article;
     }
 
-    public void setArticle(Article article) {
+    public void setArticle(ArticleCommande article) {
         this.article = article;
     }
 
