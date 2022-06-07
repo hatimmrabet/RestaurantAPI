@@ -20,13 +20,13 @@ public abstract class Article {
     @NotBlank
     private String description;
     private String image;
-    private Double price;
+    private float price;
     private Date createdAt;
 
     public Article() {
     }
 
-    public Article(String name, String description, String image, Double price) {
+    public Article(String name, String description, String image, float price) {
         this.name = name;
         this.description = description;
         this.image = image;
@@ -66,11 +66,11 @@ public abstract class Article {
         this.image = image;
     }
 
-    public Double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

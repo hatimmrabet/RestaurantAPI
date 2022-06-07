@@ -20,7 +20,7 @@ public class Commande {
     private String type;
     @DBRef
     private User client;
-    private double price;
+    private float price;
     private CommandeItem[] items;
 
     public Commande() {
@@ -32,7 +32,7 @@ public class Commande {
         this.etat = etat;
         this.type = type;
         this.client = client;
-        this.price = 0;
+        this.price = 0.0f;
         this.items = items;
     }
 
@@ -76,11 +76,11 @@ public class Commande {
         this.client = client;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -96,11 +96,12 @@ public class Commande {
         return items;
     }
 
-
-    public void countPrice() {
+    public float countTotalPrice() {
+        float total = 0;
         for (CommandeItem item : items) {
-            this.price += item.getArticle().getPrice() * item.getQuantity();
+            total += item.getArticle().getPrice() * item.getQuantity();
         }
+        return total;
     }
 
     @Override

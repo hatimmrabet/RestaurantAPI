@@ -12,7 +12,7 @@ public class Menu extends Article {
     public Menu() {
     }
 
-    public Menu(String name, String description, String image, Double price, Produit[] produits) {
+    public Menu(String name, String description, String image, float price, Produit[] produits) {
         super(name, description, image, price);
         this.produits = produits;
     }

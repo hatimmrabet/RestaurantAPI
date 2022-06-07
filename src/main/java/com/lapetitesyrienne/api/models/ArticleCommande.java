@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = Article.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = ArticleCommande.class)
 @JsonSubTypes({ @Type(MenuCommande.class), @Type(ProduitCommande.class) })
 public abstract class ArticleCommande {
 
@@ -20,13 +20,13 @@ public abstract class ArticleCommande {
     @NotBlank
     private String description;
     private String image;
-    private Double price;
+    private float price;
     private Date createdAt;
 
     public ArticleCommande() {
     }
 
-    public ArticleCommande(String name, String description, String image, Double price) {
+    public ArticleCommande(String name, String description, String image, float price) {
         this.name = name;
         this.description = description;
         this.image = image;
@@ -66,11 +66,11 @@ public abstract class ArticleCommande {
         this.image = image;
     }
 
-    public Double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

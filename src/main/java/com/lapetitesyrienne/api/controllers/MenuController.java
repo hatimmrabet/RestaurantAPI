@@ -51,7 +51,7 @@ public class MenuController {
 
     @PostMapping()
     public ResponseEntity<?> createMenu(@RequestParam("image") MultipartFile image,
-            @RequestParam("name") String name, @RequestParam("price") double price,
+            @RequestParam("name") String name, @RequestParam("price") float price,
             @RequestParam("description") String description,
             @RequestParam("produits") String[] produits_id) {
         Menu menu = new Menu();
@@ -91,7 +91,7 @@ public class MenuController {
     @PutMapping("/{id}")
     public ResponseEntity<?> editMenu(@PathVariable String id, 
             @RequestParam(name="image", required = false) MultipartFile image,
-            @RequestParam("name") String name, @RequestParam("price") double price,
+            @RequestParam("name") String name, @RequestParam("price") float price,
             @RequestParam("description") String description,
             @RequestParam("produits") String[] produits_id) {
 

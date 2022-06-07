@@ -1,25 +1,22 @@
 package com.lapetitesyrienne.api.models;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "menus")
 public class MenuCommande extends ArticleCommande {
 
-    private Produit[] produits;
+    private ProduitCommande[] produits;
 
     public MenuCommande() {
     }
 
-    public MenuCommande(String name, String description, String image, Double price, Produit[] produits) {
+    public MenuCommande(String name, String description, String image, float price, ProduitCommande[] produits) {
         super(name, description, image, price);
         this.produits = produits;
     }
 
-    public Produit[] getProduits() {
+    public ProduitCommande[] getProduits() {
         return produits;
     }
 
-    public void setProduits(Produit[] produits) {
+    public void setProduits(ProduitCommande[] produits) {
         this.produits = produits;
     }
 
