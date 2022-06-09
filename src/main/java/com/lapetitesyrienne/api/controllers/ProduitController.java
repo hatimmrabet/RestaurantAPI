@@ -65,7 +65,7 @@ public class ProduitController {
     @PostMapping()
     public ResponseEntity<?> createProduit(@RequestParam("image") MultipartFile image,
             @RequestParam("name") String name, @RequestParam("description") String description,
-            @RequestParam("price") float price, @RequestParam("categorie") String categorieName,
+            @RequestParam("price") Double price, @RequestParam("categorie") String categorieName,
             @RequestParam("ingredients") String[] ingredientsName) {
         // create product
         Produit produit = new Produit();
@@ -114,7 +114,7 @@ public class ProduitController {
     public ResponseEntity<?> editProduit(@PathVariable String id,
             @RequestParam(name = "image", required = false) MultipartFile image,
             @RequestParam("name") String name, @RequestParam("description") String description,
-            @RequestParam("price") float price, @RequestParam("categorie") String categorieName,
+            @RequestParam("price") Double price, @RequestParam("categorie") String categorieName,
             @RequestParam("ingredients") String[] ingredientsName) {
         // get produit
         if (!produitRepository.findById(id).isPresent()) {

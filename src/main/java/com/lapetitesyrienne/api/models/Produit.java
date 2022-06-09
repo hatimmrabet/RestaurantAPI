@@ -14,7 +14,7 @@ public class Produit extends Article {
     public Produit() {
     }
 
-    public Produit(String name, String description, String image, float price, Categorie categorie, Ingredient[] ingredients) {
+    public Produit(String name, String description, String image, Double price, Categorie categorie, Ingredient[] ingredients) {
         super(name, description, image, price);
         this.categorie = categorie;
         this.ingredients = ingredients;
