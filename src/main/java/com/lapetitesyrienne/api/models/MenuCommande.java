@@ -7,7 +7,7 @@ public class MenuCommande extends ArticleCommande {
     public MenuCommande() {
     }
 
-    public MenuCommande(String name, String description, String image, float price, ProduitCommande[] produits) {
+    public MenuCommande(String name, String description, String image, Double price, ProduitCommande[] produits) {
         super(name, description, image, price);
         this.produits = produits;
     }

@@ -8,7 +8,7 @@ public class ProduitCommande extends ArticleCommande {
     public ProduitCommande() {
     }
 
-    public ProduitCommande(String name, String description, String image, float price, Categorie categorie, Ingredient[] ingredients) {
+    public ProduitCommande(String name, String description, String image, Double price, Categorie categorie, Ingredient[] ingredients) {
         super(name, description, image, price);
         this.categorie = categorie;
         this.ingredients = ingredients;

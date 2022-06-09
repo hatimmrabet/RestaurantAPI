@@ -14,7 +14,7 @@ public class CommandeDTO {
     private String etat;
     private String type;
     private UserDTO client;
-    private float price;
+    private Double price;
     private CommandeItem[] items;
 
     public CommandeDTO(Commande cmd) {
@@ -68,11 +68,11 @@ public class CommandeDTO {
         this.client = client;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

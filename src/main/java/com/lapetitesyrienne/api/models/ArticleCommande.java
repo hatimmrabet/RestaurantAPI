@@ -20,13 +20,13 @@ public abstract class ArticleCommande {
     @NotBlank
     private String description;
     private String image;
-    private float price;
+    private Double price;
     private Date createdAt;
 
     public ArticleCommande() {
     }
 
-    public ArticleCommande(String name, String description, String image, float price) {
+    public ArticleCommande(String name, String description, String image, Double price) {
         this.name = name;
         this.description = description;
         this.image = image;
@@ -66,11 +66,11 @@ public abstract class ArticleCommande {
         this.image = image;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
