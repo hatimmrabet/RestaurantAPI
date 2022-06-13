@@ -73,7 +73,7 @@ public class CommandeController {
         client = userRepository.findById(request.getClient().getId()).get();
         // i deleted menu from commande
         Commande cmd = new Commande(numero, new Date(), EOrderStatus.PENDING.toString(), request.getType(), client, request.getItems());;
-        cmd.setPrice(cmd.countTotalPrice());
+        cmd.setTotalPrice();
         commandeRepository.save(cmd);
         return ResponseEntity.status(HttpStatus.CREATED).body(new CommandeDTO(cmd));
     }

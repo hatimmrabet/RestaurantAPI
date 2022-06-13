@@ -96,12 +96,12 @@ public class Commande {
         return items;
     }
 
-    public Double countTotalPrice() {
-        Double total = 0.0;
+    public void setTotalPrice() {
+        int total = 0;
         for (CommandeItem item : items) {
-            total += item.getArticle().getPrice() * item.getQuantity();
+            total += item.getArticle().getPrice() * 100 * item.getQuantity();
         }
-        return total;
+        this.price = total / 100.0;
     }
 
     @Override

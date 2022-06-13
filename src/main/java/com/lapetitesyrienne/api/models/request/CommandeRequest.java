@@ -12,12 +12,12 @@ public class CommandeRequest {
     private String type;
     private User client;
     private CommandeItem[] items;
-    private float price;
+    private double price;
 
     public CommandeRequest() {
     }
 
-    public CommandeRequest(String type, User client, CommandeItem[] items, float price) {
+    public CommandeRequest(String type, User client, CommandeItem[] items, double price) {
         this.type = type;
         this.client = client;
         this.items = items;
@@ -48,11 +48,11 @@ public class CommandeRequest {
         this.type = type;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
