@@ -58,7 +58,6 @@ public class AuthController {
 
         // get user details
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        System.out.println(userDetails);
         // get user role
         String role = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
